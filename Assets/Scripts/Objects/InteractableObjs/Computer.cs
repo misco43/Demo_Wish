@@ -14,13 +14,13 @@ public class Computer : BaseInteractableObj
 
         base.EnterView();
         render.sharedMaterial = interactMat;
-
     }
 
     public override void Interact()
     {
         base.Interact();
-        EventCenter.Instance.EventTrigger<string>(E_EventType.InteractWithObj, "这是我的电脑，我每天在它面前度过我无聊的人生");
+        // EventCenter.Instance.EventTrigger<string>(E_EventType.InteractWithObj, "这是我的电脑，我每天在它面前度过我无聊的人生");
+        Caption caption = CaptionMgr.Instance.ShowCustomCaption("这是我的电脑，我每天在它面前度过我无聊的人生", TimeLineMgr.Instance.OnPlay);
     }
 
     public override void ExitView()

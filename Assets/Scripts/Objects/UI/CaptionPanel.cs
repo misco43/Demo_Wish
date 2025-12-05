@@ -2,30 +2,51 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class CaptionPanel : BasePanel
 {
-    public GameObject playCationPrefab;
-    private PlayerTxtAnimation playerCation;
+    [SerializeField] private GameObject _captionPrefab;
+    private Caption _playerCation;
 
-    protected override void Start()
+    /// <summary>
+    /// Show the caption with the paramenter pass in
+    /// </summary>
+    /// <param name="content">the caption content you want to show </param>
+    public Caption ShowCaption(string content, UnityAction callback)
     {
-        base.Start();
-        if(playerCation == null)
-            playCationPrefab = Resources.Load<GameObject>("Prefabs/UI/Items/txtPlayerCaption");
-    }
+        //TODO: To deal the question of when caption is playing and other place call to show a new caption
+        if(_playerCation == null)
+        {
+            _playerCation = Instantiate<GameObject>(_captionPrefab, transform).GetComponent<Caption>();
+            _playerCation.ShowText(content);
+            _playerCation.OnCaptionEnd += callback;
 
-    public void ShowCaption(string caption)
-    {
-        playerCation = Instantiate<GameObject>(playCationPrefab, transform).GetComponent<PlayerTxtAnimation>();
-        playerCation.targetText.text = caption;
-        playerCation.ShowText();
+            return _playerCation;
+        }
+        else if(_playerCation.State == CaptionState.Hidden)
+        {
+            //playerCation.Init(content);
+            _playerCation.ShowText(content);
+            _playerCation.OnCaptionEnd += callback;
 
-        Invoke("HideText", 3f);
-    }
+            return _playerCation; 
+        }
+        else
+        {
+            //Init a new Caption obj to show
+            Caption caption = Instantiate<GameObject>(_captionPrefab, transform).GetComponent<Caption>();
+            caption.targetText.SetText(content);
+            caption.ShowText(content);
 
-    private void HideText()
-    {
-        playerCation.HideText();
+             _playerCation.OnCaptionEnd += callback;
+            caption.OnCaptionEnd += () =>
+            {
+               Destroy(caption.gameObject);  
+            };
+
+            return caption;
+        }
+
     }
 }

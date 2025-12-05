@@ -13,8 +13,8 @@ public class Main : MonoBehaviour
     {
         //register event
         //InteractObj event
-        EventCenter.Instance.AddEventListener<string>(E_EventType.InteractWithObj, (info) => {
-            UIManager.Instance.ShowPanel<CaptionPanel>(UIManager.E_Layer.Top).ShowCaption(info);
-        });
+        // EventCenter.Instance.AddEventListener<string>(E_EventType.InteractWithObj, (info) => {
+        //     UIManager.Instance.ShowPanel<CaptionPanel>(UIManager.E_Layer.Top).ShowCaption(info);
+        // });
     }
 }

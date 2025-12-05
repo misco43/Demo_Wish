@@ -47,3 +47,8 @@ public class ABResMgr : Singleton<ABResMgr>
 #endif
     }
 }
+
+public static class ABName
+{
+    public readonly static string UI_ITEM = "prefabs/ui";
+}
